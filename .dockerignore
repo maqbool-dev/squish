@@ -1,0 +1,14 @@
+# Don't ship these into the Docker build — they're rebuilt inside the image.
+node_modules
+dist
+
+# Local + version-control noise
+.git
+.gitignore
+.DS_Store
+*.local
+.env
+.env.local
+
+# Docs aren't needed in the image
+README.md

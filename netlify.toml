@@ -1,0 +1,10 @@
+# Netlify build + SPA settings for a Vite project.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Send all routes to index.html so client-side navigation works.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

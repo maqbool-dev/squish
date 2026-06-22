@@ -1,0 +1,111 @@
+# Squish
+
+Compress any image to an **exact file size** — right in the browser. No uploads,
+no servers, no waiting. Type a target like `2 MB` and Squish trims quality and
+resolution until your image fits under it.
+
+Built with **React + Vite + Tailwind CSS** and
+[`browser-image-compression`](https://www.npmjs.com/package/browser-image-compression).
+
+---
+
+## Features
+
+- Drag-and-drop **and** click-to-browse upload
+- Set an exact target size in MB (defaults to 2 MB)
+- Original vs. compressed previews with a **drag-to-compare** slider
+- Live original size, compressed size, and savings %
+- Friendly errors for unsupported files
+- Loading / progress state while compressing
+- 100% client-side — **images never leave your device**
+- Fully responsive, keyboard-accessible, respects reduced-motion
+
+---
+
+## Getting started
+
+You need [Node.js](https://nodejs.org) 18+ installed.
+
+```bash
+npm install      # 1. install dependencies
+npm run dev      # 2. start dev server at http://localhost:5173
+npm run build    # 3. build for production (outputs to /dist)
+npm run preview  # 4. preview the production build locally
+```
+
+---
+
+## Project structure
+
+```
+squish/
+├── public/
+│   └── favicon.svg            # browser tab icon
+├── src/
+│   ├── components/
+│   │   ├── icons.jsx          # inline SVG icon set (no icon library)
+│   │   ├── Header.jsx         # top nav bar
+│   │   ├── Hero.jsx           # headline + the compressor tool
+│   │   ├── Compressor.jsx     # main stateful tool (upload -> target -> result)
+│   │   ├── Dropzone.jsx       # drag-and-drop + file picker
+│   │   ├── ResultPreview.jsx  # stats, savings meter, download
+│   │   ├── CompareSlider.jsx  # draggable before/after comparison
+│   │   ├── Features.jsx       # "why Squish" cards
+│   │   ├── HowItWorks.jsx     # 3-step explainer
+│   │   ├── FAQ.jsx            # accordion
+│   │   └── Footer.jsx
+│   ├── utils/
+│   │   ├── compress.js        # validation + browser-image-compression wrapper
+│   │   └── format.js          # bytes / % / dimensions helpers
+│   ├── App.jsx                # assembles all sections
+│   ├── main.jsx               # React entry point
+│   └── index.css              # Tailwind + fonts + base styles
+├── index.html                 # HTML shell
+├── tailwind.config.js         # design tokens (colors, fonts, shadows)
+├── postcss.config.js
+├── vite.config.js
+├── netlify.toml               # Netlify build + SPA redirect config
+└── package.json
+```
+
+---
+
+## Deploy to Netlify
+
+### Option A — Git (recommended)
+
+1. Push this project to a GitHub/GitLab/Bitbucket repository.
+2. Go to app.netlify.com -> **Add new site** -> **Import an existing project**.
+3. Pick your repo. Netlify reads `netlify.toml`, so settings auto-fill:
+   - **Build command:** `npm run build`
+   - **Publish directory:** `dist`
+4. Click **Deploy**. Every future `git push` redeploys automatically.
+
+### Option B — Drag and drop
+
+1. Run `npm run build` locally.
+2. Go to app.netlify.com/drop.
+3. Drag the generated **`dist`** folder onto the page. Done.
+
+### Option C — Netlify CLI
+
+```bash
+npm install -g netlify-cli
+npm run build
+netlify deploy --prod --dir=dist
+```
+
+---
+
+## How compression works
+
+`src/utils/compress.js` calls `browser-image-compression` with your target size.
+The library runs on a Web Worker and repeatedly lowers JPEG/WebP quality (and,
+if needed, scales the resolution down) until the output is under `maxSizeMB`.
+Because it is all client-side, your original image is never transmitted anywhere.
+
+---
+
+## License
+
+MIT — do whatever you like.
