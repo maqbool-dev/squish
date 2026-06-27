@@ -4,9 +4,10 @@ import ResultPreview from "./ResultPreview.jsx";
 import { Spinner, Warning, X, Lock } from "./icons.jsx";
 import {
   validateFile,
-  compressToTarget,
+  compressImage,
+  readDimensions,
 } from "../utils/compress.js";
-import { readImageDimensions, formatBytes } from "../utils/format.js";
+import { formatBytes } from "../utils/format.js";
 
 const DEFAULT_TARGET_MB = 2;
 
@@ -17,6 +18,10 @@ export default function Compressor() {
   const [status, setStatus] = useState("idle"); // idle | ready | working | done | error
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState("");
+  // Refine panel: re-target a finished result without starting over.
+  const [refineTarget, setRefineTarget] = useState(""); // "" = keep current target
+  const [refineMaxDim, setRefineMaxDim] = useState(""); // "" = no dimension limit
+  const [refining, setRefining] = useState(false);
 
   // Clean up object URLs when they change / unmount to avoid memory leaks.
   useEffect(() => {
@@ -36,7 +41,7 @@ export default function Compressor() {
       setOriginal(null);
       return;
     }
-    const dimensions = await readImageDimensions(file);
+    const dimensions = await readDimensions(file);
     setOriginal({ file, url: URL.createObjectURL(file), dimensions });
     setStatus("ready");
   }, []);
@@ -52,14 +57,41 @@ export default function Compressor() {
     setStatus("working");
     setProgress(0);
     try {
-      const file = await compressToTarget(original.file, target, setProgress);
-      const dimensions = await readImageDimensions(file);
+      const file = await compressImage(original.file, target, setProgress);
+      const dimensions = await readDimensions(file);
       setCompressed({ file, url: URL.createObjectURL(file), dimensions });
       setStatus("done");
     } catch (err) {
       console.error(err);
       setError("Something went wrong while compressing. Please try another image.");
       setStatus("error");
+    }
+  }
+
+  // Re-squish a finished result with a new target and/or an explicit max
+  // dimension. Always compresses from the ORIGINAL file, never the compressed
+  // one, so quality doesn't degrade with each refine. Stays on the result view.
+  async function reCompress() {
+    const newTarget = refineTarget !== "" ? Number(refineTarget) : targetMB;
+    const maxDim = refineMaxDim !== "" ? Number(refineMaxDim) : undefined;
+    if (!newTarget || newTarget <= 0) return;
+
+    setError("");
+    setRefining(true);
+    setProgress(0);
+    try {
+      const file = await compressImage(original.file, newTarget, setProgress, maxDim);
+      const dimensions = await readDimensions(file);
+      setCompressed({ file, url: URL.createObjectURL(file), dimensions });
+      setTargetMB(newTarget);
+      setRefineTarget("");
+      setRefineMaxDim("");
+    } catch (err) {
+      console.error(err);
+      setError("Something went wrong while re-compressing.");
+    } finally {
+      setRefining(false);
+      setProgress(0);
     }
   }
 
@@ -70,6 +102,8 @@ export default function Compressor() {
     setProgress(0);
     setStatus("idle");
     setTargetMB(DEFAULT_TARGET_MB);
+    setRefineTarget("");
+    setRefineMaxDim("");
   }
 
   const working = status === "working";
@@ -178,6 +212,71 @@ export default function Compressor() {
             savings={savings(original.file.size, compressed.file.size)}
             targetMB={Number(targetMB)}
           />
+
+          {/* Refine: re-squish from the original with a new target / max size */}
+          <div className="mt-5 space-y-3 border-t border-line pt-5">
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="block">
+                <span className="font-mono text-[11px] uppercase tracking-wider text-muted">
+                  New target
+                </span>
+                <div className="mt-1.5 flex overflow-hidden rounded-xl border border-line bg-paper/60 focus-within:border-leaf">
+                  <input
+                    type="number"
+                    inputMode="decimal"
+                    min="0.05"
+                    step="0.1"
+                    placeholder={targetMB}
+                    value={refineTarget}
+                    disabled={refining}
+                    onChange={(e) => setRefineTarget(e.target.value)}
+                    className="w-full bg-transparent px-4 py-3 font-mono text-lg outline-none disabled:opacity-60"
+                  />
+                  <span className="flex items-center border-l border-line bg-surface px-4 font-mono text-sm font-medium text-muted">
+                    MB
+                  </span>
+                </div>
+              </label>
+
+              <label className="block">
+                <span className="font-mono text-[11px] uppercase tracking-wider text-muted">
+                  Max dimension (px)
+                </span>
+                <div className="mt-1.5 flex overflow-hidden rounded-xl border border-line bg-paper/60 focus-within:border-leaf">
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    min="100"
+                    step="10"
+                    placeholder="No limit"
+                    value={refineMaxDim}
+                    disabled={refining}
+                    onChange={(e) => setRefineMaxDim(e.target.value)}
+                    className="w-full bg-transparent px-4 py-3 font-mono text-lg outline-none disabled:opacity-60"
+                  />
+                  <span className="flex items-center border-l border-line bg-surface px-4 font-mono text-sm font-medium text-muted">
+                    px
+                  </span>
+                </div>
+              </label>
+            </div>
+
+            <button
+              type="button"
+              onClick={reCompress}
+              disabled={refining}
+              className="btn-ghost w-full"
+            >
+              {refining ? (
+                <>
+                  <Spinner className="h-5 w-5" /> Re-squishing… {progress}%
+                </>
+              ) : (
+                <>Re-squish</>
+              )}
+            </button>
+          </div>
+
           <button type="button" onClick={reset} className="btn-ghost mt-3 w-full">
             Compress another image
           </button>
