@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Syne:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -7,10 +7,34 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Mirror of the `line` token, exposed for color-mix() in .card proximity. */
+    --line: #252620;
   }
 
   body {
     @apply bg-paper text-ink font-sans antialiased;
+  }
+
+  /* Ambient cursor glow — a soft green light that trails the pointer.
+     Position is driven by --glow-x / --glow-y, set per-frame in App.jsx.
+     Sits behind all page content (the app root is z-10). */
+  body::before {
+    content: "";
+    position: fixed;
+    pointer-events: none;
+    z-index: 0;
+    left: var(--glow-x, 50vw);
+    top: var(--glow-y, 50vh);
+    width: 500px;
+    height: 500px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(22, 163, 74, 0.06) 0%,
+      rgba(22, 163, 74, 0.02) 40%,
+      transparent 70%
+    );
   }
 
   /* Visible keyboard focus everywhere */
@@ -43,7 +67,83 @@
 }
 
 @layer utilities {
-  /* Respect reduced motion preferences */
+  /* ── Subtle micro-animations ──────────────────────────────────────
+     Everything here is gated behind `no-preference` so it only runs for
+     users who haven't asked for reduced motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    /* a) Card hover lift — gentle rise on hover. The border colour is driven
+       by cursor proximity (--card-proximity, set per-frame in App.jsx):
+       it shifts from `line` toward leaf green as the cursor approaches. */
+    .card {
+      border-color: color-mix(
+        in srgb,
+        var(--line) calc(100% - calc(var(--card-proximity, 0) * 40%)),
+        #16a34a calc(var(--card-proximity, 0) * 40%)
+      );
+      transition: transform 200ms ease, border-color 0.15s ease,
+        box-shadow 200ms ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+    }
+
+    /* b) Dropzone pulse — slow leaf-tinted glow while a drag is active. */
+    @keyframes dropzonePulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+      }
+      50% {
+        box-shadow: 0 0 0 6px rgba(22, 163, 74, 0.14);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+      }
+    }
+    .drag-active {
+      animation: dropzonePulse 1.8s ease-in-out infinite;
+    }
+
+    /* c) Progress bar shimmer — a highlight sliding across the fill. */
+    .progress-shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+    .progress-shimmer::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(240, 239, 232, 0.35),
+        transparent
+      );
+      transform: translateX(-100%);
+      animation: progressShimmer 1.5s infinite;
+    }
+    @keyframes progressShimmer {
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    /* d) Result savings number — fades + rises into place. */
+    @keyframes countUp {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .count-up {
+      animation: countUp 400ms ease-out both;
+    }
+  }
+
+  /* e) Respect reduced motion preferences */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

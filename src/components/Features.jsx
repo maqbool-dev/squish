@@ -33,7 +33,8 @@ export default function Features() {
           {features.map(({ icon: Icon, title, body }) => (
             <div
               key={title}
-              className="rounded-xl2 border border-line bg-surface p-6 shadow-card transition-shadow hover:shadow-lift"
+              data-glow
+              className="card rounded-xl2 border border-line bg-surface p-6 shadow-card hover:shadow-lift"
             >
               <span className="grid h-11 w-11 place-items-center rounded-xl bg-leaf-soft text-leaf">
                 <Icon className="h-5 w-5" />

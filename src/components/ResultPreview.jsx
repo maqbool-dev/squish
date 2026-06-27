@@ -24,7 +24,7 @@ export default function ResultPreview({ original, compressed, savings, targetMB 
       <div className="flex items-end justify-between gap-4">
         <div>
           <p className="eyebrow">Result</p>
-          <p className="mt-1 font-display text-4xl font-extrabold leading-none tracking-tight text-leaf">
+          <p className="count-up mt-1 font-display text-4xl font-extrabold leading-none tracking-tight text-leaf">
             −{savings}%
           </p>
           <p className="mt-1 text-sm text-muted">smaller than the original</p>
@@ -67,7 +67,7 @@ export default function ResultPreview({ original, compressed, savings, targetMB 
 
 function Stat({ label, value, sub, accent }) {
   return (
-    <div className={`rounded-xl border px-4 py-3 ${accent ? "border-leaf/30 bg-leaf-soft/50" : "border-line bg-paper/60"}`}>
+    <div className={`card rounded-xl border px-4 py-3 ${accent ? "border-leaf/30 bg-leaf-soft/50" : "border-line bg-paper/60"}`}>
       <p className="font-mono text-[11px] uppercase tracking-wider text-muted">{label}</p>
       <p className={`mt-0.5 font-mono text-lg font-semibold ${accent ? "text-leaf" : "text-ink"}`}>{value}</p>
       <p className="font-mono text-[11px] text-muted">{sub} px</p>

@@ -4,24 +4,24 @@ export default {
   theme: {
     extend: {
       colors: {
-        paper: "#F6F5EF",
-        surface: "#FFFFFF",
-        ink: "#15160F",
-        muted: "#6E6E64",
-        line: "#E6E4DA",
+        paper: "#0E0F0A",
+        surface: "#161710",
+        ink: "#F0EFE8",
+        muted: "#7A7A6E",
+        line: "#252620",
         leaf: {
           DEFAULT: "#16A34A",
           bright: "#22C55E",
-          soft: "#E7F6EC",
+          soft: "#0D2B17",
         },
         amber: {
           DEFAULT: "#C2772E",
-          soft: "#F7EEDF",
+          soft: "#2B1A0A",
         },
       },
       fontFamily: {
         display: ['"Bricolage Grotesque"', "system-ui", "sans-serif"],
-        sans: ['Inter', "system-ui", "sans-serif"],
+        sans: ['"Syne"', "system-ui", "sans-serif"],
         mono: ['"JetBrains Mono"', "ui-monospace", "monospace"],
       },
       boxShadow: {

@@ -149,7 +149,7 @@ export default function Compressor() {
           {working && (
             <div className="h-1.5 w-full overflow-hidden rounded-full bg-line">
               <div
-                className="h-full rounded-full bg-leaf transition-[width] duration-300"
+                className="progress-shimmer h-full rounded-full bg-leaf transition-[width] duration-300"
                 style={{ width: `${progress}%` }}
               />
             </div>

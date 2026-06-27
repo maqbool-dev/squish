@@ -36,7 +36,7 @@ export default function Dropzone({ onFile, disabled }) {
       disabled={disabled}
       className={`group relative flex w-full flex-col items-center justify-center gap-3 rounded-xl2 border-2 border-dashed px-6 py-10 text-center transition-all
         ${dragging
-          ? "border-leaf bg-leaf-soft"
+          ? "drag-active border-leaf bg-leaf-soft"
           : "border-line bg-paper/60 hover:border-ink/25 hover:bg-paper"}
         ${disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
     >

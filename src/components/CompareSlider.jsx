@@ -59,7 +59,7 @@ export default function CompareSlider({ originalUrl, compressedUrl, dimensions }
         </div>
 
         {/* Labels */}
-        <span className="absolute left-3 top-3 rounded-full bg-ink/75 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-white">
+        <span className="absolute left-3 top-3 rounded-full bg-black/70 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-white">
           Original
         </span>
         <span className="absolute right-3 top-3 rounded-full bg-leaf px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-white">
@@ -76,7 +76,7 @@ export default function CompareSlider({ originalUrl, compressedUrl, dimensions }
             aria-label="Drag to compare original and compressed"
             onMouseDown={() => setActive(true)}
             onTouchStart={() => setActive(true)}
-            className="grid h-9 w-9 -translate-x-1/2 cursor-ew-resize place-items-center rounded-full border border-line bg-white text-ink shadow-lift"
+            className="grid h-9 w-9 -translate-x-1/2 cursor-ew-resize place-items-center rounded-full border border-line bg-surface text-ink shadow-lift"
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="m9 7-4 5 4 5M15 7l4 5-4 5" />

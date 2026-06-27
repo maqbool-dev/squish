@@ -27,9 +27,13 @@ export default function HowItWorks() {
           </h2>
         </div>
 
-        <ol className="mt-10 grid gap-px overflow-hidden rounded-xl2 border border-line bg-line sm:grid-cols-3">
+        <ol className="mt-10 grid gap-4 sm:grid-cols-3">
           {steps.map((s) => (
-            <li key={s.n} className="bg-surface p-6 sm:p-7">
+            <li
+              key={s.n}
+              data-glow
+              className="card rounded-xl2 border border-line bg-surface p-6 shadow-card hover:shadow-lift sm:p-7"
+            >
               <span className="font-mono text-2xl font-semibold text-leaf">{s.n}</span>
               <h3 className="mt-3 font-display text-lg font-bold tracking-tight">{s.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted">{s.body}</p>

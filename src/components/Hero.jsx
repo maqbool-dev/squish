@@ -7,7 +7,7 @@ export default function Hero() {
       {/* soft ambient wash, kept subtle */}
       <div
         className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[420px]
-                   bg-[radial-gradient(60%_120%_at_20%_0%,#E7F6EC_0%,transparent_60%)]"
+                   bg-[radial-gradient(60%_120%_at_20%_0%,#0D2B17_0%,transparent_60%)]"
         aria-hidden="true"
       />
 
