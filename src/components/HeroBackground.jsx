@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-// Fixed, full-viewport hero background. This is an image-compression tool, so
-// the heavy video is opt-in: we start with the lightweight poster and only
-// upgrade to the looping video on capable, motion-OK, non-metered displays.
-// Sections below the hero have a solid background and scroll over this.
+// Fixed, full-viewport hero background. The looping video plays on all screen
+// sizes now; it only falls back to the static poster when the user prefers
+// reduced motion or has Save-Data on. Sections below the hero have a solid
+// background and scroll over this.
 const layer = {
   position: "fixed",
   top: 0,
@@ -17,24 +17,47 @@ const layer = {
 export default function HeroBackground() {
   // Default to the poster so first paint (and any no-JS / reduced case) is safe.
   const [useVideo, setUseVideo] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const videoRef = useRef(null);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const small = window.matchMedia("(max-width: 900px)").matches;
     const saveData = navigator.connection?.saveData === true;
-    if (!reduce && !small && !saveData) setUseVideo(true);
+    // Screen width no longer gates the video — only reduced-motion / Save-Data.
+    if (!reduce && !saveData) setUseVideo(true);
+
+    // Track mobile so we can re-aim the crop (the sphere sits center-low in the
+    // frame, which `object-fit: cover` would otherwise crop out on tall phones).
+    const mq = window.matchMedia("(max-width: 900px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
   }, []);
+
+  // Some mobile browsers (Chrome/Safari) don't reliably honor the autoPlay
+  // attribute; explicitly nudge playback once the video mounts.
+  useEffect(() => {
+    if (useVideo && videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  }, [useVideo]);
+
+  // Desktop keeps the centered crop; mobile shifts down so the glowing sphere
+  // (center-to-lower-center of the frame) stays clearly in view.
+  const objectPosition = isMobile ? "center 65%" : "center center";
 
   return (
     <>
       {useVideo ? (
         <video
-          style={{ ...layer, objectFit: "cover" }}
+          ref={videoRef}
+          style={{ ...layer, objectFit: "cover", objectPosition }}
           autoPlay
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
           poster="/hero-poster.jpg"
           src="/hero-bg.mp4"
           aria-hidden="true"
@@ -49,7 +72,7 @@ export default function HeroBackground() {
             ...layer,
             backgroundImage: "url(/hero-poster.jpg)",
             backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundPosition: objectPosition,
           }}
           aria-hidden="true"
         />

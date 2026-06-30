@@ -8,14 +8,14 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="px-8 pt-[70px] pb-[15vh] max-[900px]:px-[18px] max-[900px]:pt-[90px] max-[900px]:pb-[12vh]"
+      className="px-8 pt-[70px] pb-[15vh] max-[900px]:px-[18px] max-[900px]:pt-[64px] max-[900px]:pb-[12vh]"
       style={{
         position: "relative",
         zIndex: 1,
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-end",
-        minHeight: "100vh",
+        minHeight: "100dvh",
       }}
     >
       {/* Scrim scoped to the hero (scrolls away with it). Left-darken keeps the
@@ -70,7 +70,7 @@ export default function Hero() {
             display: "flex",
             flexWrap: "wrap",
             gap: "0.25em",
-            fontSize: "clamp(26px, 3vw, 42px)",
+            fontSize: "clamp(24px, 3vw, 42px)",
             fontWeight: 600,
             lineHeight: 1.08,
             letterSpacing: "-0.02em",
@@ -94,8 +94,8 @@ export default function Hero() {
         <FadeUp
           as="p"
           delay={0.9}
+          className="mt-6 max-[900px]:mt-4"
           style={{
-            marginTop: 24,
             fontSize: 14,
             lineHeight: 1.65,
             color: "rgba(255,255,255,0.85)",
@@ -107,7 +107,7 @@ export default function Hero() {
           uploaded.
         </FadeUp>
 
-        <FadeUp as="div" delay={1.05} style={{ marginTop: 32 }}>
+        <FadeUp as="div" delay={1.05} className="mt-8 max-[900px]:mt-5">
           <a href="#tool" className="btn-primary btn-glow">
             Compress an image
           </a>
