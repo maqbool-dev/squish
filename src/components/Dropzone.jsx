@@ -36,13 +36,13 @@ export default function Dropzone({ onFile, disabled }) {
       disabled={disabled}
       className={`group relative flex w-full flex-col items-center justify-center gap-3 rounded-xl2 border-2 border-dashed px-6 py-10 text-center transition-all
         ${dragging
-          ? "drag-active border-leaf bg-leaf-soft"
+          ? "drag-active border-amber bg-amber-soft"
           : "border-line bg-paper/60 hover:border-ink/25 hover:bg-paper"}
         ${disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
     >
       <span
         className={`flex h-12 w-12 items-center justify-center rounded-full transition-colors
-          ${dragging ? "bg-leaf text-white" : "bg-surface text-ink shadow-sm group-hover:text-leaf"}`}
+          ${dragging ? "bg-amber text-paper" : "bg-surface text-ink shadow-sm group-hover:text-amber"}`}
       >
         <UploadCloud className="h-6 w-6" />
       </span>
@@ -52,7 +52,7 @@ export default function Dropzone({ onFile, disabled }) {
           {dragging ? "Drop to upload" : "Drag an image here"}
         </span>
         <span className="block text-sm text-muted">
-          or <span className="font-medium text-leaf underline-offset-2 group-hover:underline">browse your files</span>
+          or <span className="font-medium text-amber underline-offset-2 group-hover:underline">browse your files</span>
         </span>
       </span>
 

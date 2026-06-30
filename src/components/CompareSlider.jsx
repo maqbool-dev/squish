@@ -62,7 +62,7 @@ export default function CompareSlider({ originalUrl, compressedUrl, dimensions }
         <span className="absolute left-3 top-3 rounded-full bg-black/70 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-white">
           Original
         </span>
-        <span className="absolute right-3 top-3 rounded-full bg-leaf px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-white">
+        <span className="absolute right-3 top-3 rounded-full bg-amber px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-paper">
           Compressed
         </span>
 

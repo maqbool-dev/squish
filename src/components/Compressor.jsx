@@ -147,7 +147,7 @@ export default function Compressor() {
             <span className="font-mono text-[11px] uppercase tracking-wider text-muted">
               Target size
             </span>
-            <div className="mt-1.5 flex overflow-hidden rounded-xl border border-line bg-paper/60 focus-within:border-leaf">
+            <div className="mt-1.5 flex overflow-hidden rounded-xl border border-line bg-paper/60 focus-within:border-amber">
               <input
                 type="number"
                 inputMode="decimal"
@@ -168,7 +168,7 @@ export default function Compressor() {
             type="button"
             onClick={handleCompress}
             disabled={working}
-            className="btn-primary w-full"
+            className="btn-primary btn-glow w-full"
           >
             {working ? (
               <>
@@ -183,7 +183,7 @@ export default function Compressor() {
           {working && (
             <div className="h-1.5 w-full overflow-hidden rounded-full bg-line">
               <div
-                className="progress-shimmer h-full rounded-full bg-leaf transition-[width] duration-300"
+                className="progress-shimmer h-full rounded-full bg-amber transition-[width] duration-300"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -220,7 +220,7 @@ export default function Compressor() {
                 <span className="font-mono text-[11px] uppercase tracking-wider text-muted">
                   New target
                 </span>
-                <div className="mt-1.5 flex overflow-hidden rounded-xl border border-line bg-paper/60 focus-within:border-leaf">
+                <div className="mt-1.5 flex overflow-hidden rounded-xl border border-line bg-paper/60 focus-within:border-amber">
                   <input
                     type="number"
                     inputMode="decimal"
@@ -242,7 +242,7 @@ export default function Compressor() {
                 <span className="font-mono text-[11px] uppercase tracking-wider text-muted">
                   Max dimension (px)
                 </span>
-                <div className="mt-1.5 flex overflow-hidden rounded-xl border border-line bg-paper/60 focus-within:border-leaf">
+                <div className="mt-1.5 flex overflow-hidden rounded-xl border border-line bg-paper/60 focus-within:border-amber">
                   <input
                     type="number"
                     inputMode="numeric"

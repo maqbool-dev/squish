@@ -24,13 +24,13 @@ export default function ResultPreview({ original, compressed, savings, targetMB 
       <div className="flex items-end justify-between gap-4">
         <div>
           <p className="eyebrow">Result</p>
-          <p className="count-up mt-1 font-display text-4xl font-extrabold leading-none tracking-tight text-leaf">
+          <p className="count-up mt-1 font-display text-4xl font-extrabold leading-none tracking-tight text-amber">
             −{savings}%
           </p>
           <p className="mt-1 text-sm text-muted">smaller than the original</p>
         </div>
         <div className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium
-          ${underTarget ? "bg-leaf-soft text-leaf" : "bg-amber-soft text-amber"}`}>
+          ${underTarget ? "bg-amber-soft text-amber" : "bg-ember/10 text-ember"}`}>
           <Check className="h-4 w-4" />
           {underTarget ? `Under ${targetMB} MB` : "Smallest possible"}
         </div>
@@ -67,9 +67,9 @@ export default function ResultPreview({ original, compressed, savings, targetMB 
 
 function Stat({ label, value, sub, accent }) {
   return (
-    <div className={`card rounded-xl border px-4 py-3 ${accent ? "border-leaf/30 bg-leaf-soft/50" : "border-line bg-paper/60"}`}>
+    <div className={`card rounded-xl border px-4 py-3 ${accent ? "border-amber/30 bg-amber-soft" : "border-line bg-paper/60"}`}>
       <p className="font-mono text-[11px] uppercase tracking-wider text-muted">{label}</p>
-      <p className={`mt-0.5 font-mono text-lg font-semibold ${accent ? "text-leaf" : "text-ink"}`}>{value}</p>
+      <p className={`mt-0.5 font-mono text-lg font-semibold ${accent ? "text-amber" : "text-ink"}`}>{value}</p>
       <p className="font-mono text-[11px] text-muted">{sub} px</p>
     </div>
   );
@@ -81,7 +81,7 @@ function SizeMeter({ originalBytes, compressedBytes }) {
     <div>
       <div className="relative h-3 w-full overflow-hidden rounded-full bg-line">
         <div
-          className="h-full rounded-full bg-leaf transition-[width] duration-700 ease-out"
+          className="h-full rounded-full bg-amber transition-[width] duration-700 ease-out"
           style={{ width: `${ratio}%` }}
         />
       </div>

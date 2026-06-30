@@ -13,7 +13,7 @@ const base = {
 export function LogoMark({ className = "h-6 w-6" }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect x="3" y="3" width="18" height="18" rx="5" className="fill-leaf" />
+      <rect x="3" y="3" width="18" height="18" rx="5" className="fill-amber" />
       <path
         d="M8 14.5 10.5 12 13 14l3-3.5"
         stroke="#fff"

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Chevron } from "./icons.jsx";
+import { FadeUp } from "./FadeUp.jsx";
 
 const faqs = [
   {
@@ -24,16 +25,16 @@ export default function FAQ() {
   const [open, setOpen] = useState(0);
 
   return (
-    <section id="faq" className="border-t border-line/70 py-16 sm:py-20">
+    <section id="faq" className="border-t border-line bg-paper py-16 sm:py-20">
       <div className="container-page max-w-3xl">
-        <div className="mb-10">
+        <FadeUp className="mb-10">
           <p className="eyebrow">FAQ</p>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
             Good questions, honest answers.
           </h2>
-        </div>
+        </FadeUp>
 
-        <div className="divide-y divide-line rounded-xl2 border border-line bg-surface">
+        <FadeUp delay={0.1} className="divide-y divide-line rounded-xl2 border border-line bg-surface">
           {faqs.map((item, i) => {
             const isOpen = open === i;
             return (
@@ -61,7 +62,7 @@ export default function FAQ() {
               </div>
             );
           })}
-        </div>
+        </FadeUp>
       </div>
     </section>
   );

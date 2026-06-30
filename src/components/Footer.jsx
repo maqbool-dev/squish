@@ -2,7 +2,7 @@ import { LogoMark, Lock } from "./icons.jsx";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-line/70 bg-paper">
+    <footer className="relative z-[1] border-t border-line bg-paper">
       <div className="container-page flex flex-col items-start justify-between gap-6 py-10 sm:flex-row sm:items-center">
         <div>
           <div className="flex items-center gap-2.5">
@@ -17,7 +17,7 @@ export default function Footer() {
 
         <div className="flex flex-col items-start gap-3 sm:items-end">
           <span className="inline-flex items-center gap-1.5 font-mono text-xs text-muted">
-            <Lock className="h-3.5 w-3.5 text-leaf" /> Private by design
+            <Lock className="h-3.5 w-3.5 text-amber" /> Private by design
           </span>
           <p className="font-mono text-xs text-muted">
             © {new Date().getFullYear()} Squish — built in the browser.

@@ -1,6 +1,9 @@
 import { useEffect } from "react";
+import { MotionConfig } from "motion/react";
 import Header from "./components/Header.jsx";
+import HeroBackground from "./components/HeroBackground.jsx";
 import Hero from "./components/Hero.jsx";
+import UploadSection from "./components/UploadSection.jsx";
 import Features from "./components/Features.jsx";
 import HowItWorks from "./components/HowItWorks.jsx";
 import FAQ from "./components/FAQ.jsx";
@@ -31,7 +34,7 @@ export default function App() {
       root.style.setProperty("--glow-x", `${glow.x}px`);
       root.style.setProperty("--glow-y", `${glow.y}px`);
 
-      // Element proximity: nudge each card's border toward leaf as the
+      // Element proximity: nudge each card's border toward amber as the
       // cursor nears its center. 1 = right on top, 0 = at/beyond PROXIMITY.
       const cards = document.querySelectorAll(".card, [data-glow]");
       cards.forEach((card) => {
@@ -56,15 +59,23 @@ export default function App() {
   }, []);
 
   return (
-    <div className="relative z-10 min-h-screen">
-      <Header />
-      <main>
-        <Hero />
-        <Features />
-        <HowItWorks />
-        <FAQ />
-      </main>
-      <Footer />
-    </div>
+    // reducedMotion="user" makes every Motion animation (FadeUp, ambient glow)
+    // automatically drop transforms and keep only opacity when the user asks.
+    <MotionConfig reducedMotion="user">
+      <div className="relative z-10 min-h-screen">
+        {/* Fixed video/scrim behind everything; hero is transparent over it. */}
+        <HeroBackground />
+        <Header />
+        {/* main sits above the fixed z-0 background so opaque sections cover it. */}
+        <main className="relative z-[1]">
+          <Hero />
+          <UploadSection />
+          <Features />
+          <HowItWorks />
+          <FAQ />
+        </main>
+        <Footer />
+      </div>
+    </MotionConfig>
   );
 }

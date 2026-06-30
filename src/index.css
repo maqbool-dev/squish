@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Syne:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -8,14 +8,14 @@
   html {
     scroll-behavior: smooth;
     /* Mirror of the `line` token, exposed for color-mix() in .card proximity. */
-    --line: #252620;
+    --line: rgba(240, 239, 232, 0.08);
   }
 
   body {
     @apply bg-paper text-ink font-sans antialiased;
   }
 
-  /* Ambient cursor glow — a soft green light that trails the pointer.
+  /* Ambient cursor glow — a soft amber light that trails the pointer.
      Position is driven by --glow-x / --glow-y, set per-frame in App.jsx.
      Sits behind all page content (the app root is z-10). */
   body::before {
@@ -31,15 +31,15 @@
     border-radius: 50%;
     background: radial-gradient(
       circle,
-      rgba(22, 163, 74, 0.06) 0%,
-      rgba(22, 163, 74, 0.02) 40%,
+      rgba(245, 165, 36, 0.06) 0%,
+      rgba(245, 165, 36, 0.02) 40%,
       transparent 70%
     );
   }
 
   /* Visible keyboard focus everywhere */
   :focus-visible {
-    @apply outline-none ring-2 ring-leaf ring-offset-2 ring-offset-paper;
+    @apply outline-none ring-2 ring-amber ring-offset-2 ring-offset-paper;
   }
 }
 
@@ -53,16 +53,28 @@
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-ink px-6 py-3
-           font-medium text-paper transition-all duration-200
-           hover:bg-leaf hover:shadow-lift active:scale-[0.98]
-           disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-ink disabled:hover:shadow-none;
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-amber px-6 py-3
+           font-semibold text-paper transition-all duration-200
+           hover:bg-amber-bright hover:shadow-lift active:scale-[0.98]
+           disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-amber disabled:hover:shadow-none;
   }
 
   .btn-ghost {
     @apply inline-flex items-center justify-center gap-2 rounded-full border border-line
            bg-surface px-5 py-3 font-medium text-ink transition-colors
-           hover:border-ink/30 hover:bg-paper;
+           hover:border-amber/40 hover:bg-paper;
+  }
+
+  /* Soft amber glow for the primary compress CTA — static base shadow that
+     strengthens on hover; the idle pulse is layered on below (motion-safe). */
+  .btn-glow {
+    box-shadow: 0 0 22px -6px rgba(245, 165, 36, 0.45);
+  }
+  .btn-glow:hover {
+    box-shadow: 0 0 34px -2px rgba(245, 165, 36, 0.7);
+  }
+  .btn-glow:disabled {
+    box-shadow: none;
   }
 }
 
@@ -73,12 +85,12 @@
   @media (prefers-reduced-motion: no-preference) {
     /* a) Card hover lift — gentle rise on hover. The border colour is driven
        by cursor proximity (--card-proximity, set per-frame in App.jsx):
-       it shifts from `line` toward leaf green as the cursor approaches. */
+       it shifts from `line` toward amber as the cursor approaches. */
     .card {
       border-color: color-mix(
         in srgb,
         var(--line) calc(100% - calc(var(--card-proximity, 0) * 40%)),
-        #16a34a calc(var(--card-proximity, 0) * 40%)
+        #f5a524 calc(var(--card-proximity, 0) * 40%)
       );
       transition: transform 200ms ease, border-color 0.15s ease,
         box-shadow 200ms ease;
@@ -87,20 +99,35 @@
       transform: translateY(-2px);
     }
 
-    /* b) Dropzone pulse — slow leaf-tinted glow while a drag is active. */
+    /* b) Dropzone pulse — slow amber-tinted glow while a drag is active. */
     @keyframes dropzonePulse {
       0% {
-        box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+        box-shadow: 0 0 0 0 rgba(245, 165, 36, 0);
       }
       50% {
-        box-shadow: 0 0 0 6px rgba(22, 163, 74, 0.14);
+        box-shadow: 0 0 0 6px rgba(245, 165, 36, 0.16);
       }
       100% {
-        box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+        box-shadow: 0 0 0 0 rgba(245, 165, 36, 0);
       }
     }
     .drag-active {
       animation: dropzonePulse 1.8s ease-in-out infinite;
+    }
+
+    /* Idle amber pulse layered onto .btn-glow (the static shadow stays as the
+       reduced-motion fallback since this block is motion-gated). */
+    @keyframes btnGlowPulse {
+      0%,
+      100% {
+        box-shadow: 0 0 20px -6px rgba(245, 165, 36, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 30px -2px rgba(245, 165, 36, 0.65);
+      }
+    }
+    .btn-glow:not(:hover):not(:disabled) {
+      animation: btnGlowPulse 3.2s ease-in-out infinite;
     }
 
     /* c) Progress bar shimmer — a highlight sliding across the fill. */

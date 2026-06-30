@@ -5,23 +5,23 @@ export default {
     extend: {
       colors: {
         paper: "#0E0F0A",
-        surface: "#161710",
+        surface: "#16170F",
         ink: "#F0EFE8",
-        muted: "#7A7A6E",
-        line: "#252620",
-        leaf: {
-          DEFAULT: "#16A34A",
-          bright: "#22C55E",
-          soft: "#0D2B17",
-        },
+        muted: "#9A9A8E",
+        line: "rgba(240,239,232,0.08)",
+        // Warm ember/amber accent system (replaces the old green "leaf").
         amber: {
-          DEFAULT: "#C2772E",
-          soft: "#2B1A0A",
+          DEFAULT: "#F5A524", // primary accent: buttons, savings %, active states, links
+          bright: "#FFB84D", // hover / emphasis
+          soft: "rgba(245,165,36,0.12)", // tinted backgrounds
         },
+        ember: "#F2682C", // secondary: gradients, warning state, particles
+        spark: "#D9342B", // deep accent dots
+        hot: "#FFE9C7", // hot highlight
       },
       fontFamily: {
-        display: ['"Bricolage Grotesque"', "system-ui", "sans-serif"],
-        sans: ['"Syne"', "system-ui", "sans-serif"],
+        display: ['"Space Grotesk"', "Inter", "system-ui", "sans-serif"],
+        sans: ["Inter", "system-ui", "sans-serif"],
         mono: ['"JetBrains Mono"', "ui-monospace", "monospace"],
       },
       boxShadow: {

@@ -2,7 +2,7 @@ import { LogoMark } from "./icons.jsx";
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-line/70 bg-paper/80 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-line bg-paper/80 backdrop-blur-md">
       <div className="container-page flex h-16 items-center justify-between">
         <a href="#top" className="flex items-center gap-2.5">
           <LogoMark className="h-7 w-7" />

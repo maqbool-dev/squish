@@ -1,57 +1,117 @@
-import Compressor from "./Compressor.jsx";
-import { Lock } from "./icons.jsx";
+import { FadeUp } from "./FadeUp.jsx";
+
+// Cinematic hero. The fixed background video + scrim are rendered at the app
+// root (HeroBackground); this section is transparent and sits above them.
+const HEADLINE = ["ANY", "IMAGE.", "ANY", "SIZE.", "NO", "UPLOADS."];
 
 export default function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden">
-      {/* soft ambient wash, kept subtle */}
+    <section
+      id="top"
+      className="px-8 pt-[70px] pb-[15vh] max-[900px]:px-[18px] max-[900px]:pt-[90px] max-[900px]:pb-[12vh]"
+      style={{
+        position: "relative",
+        zIndex: 1,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-end",
+        minHeight: "100vh",
+      }}
+    >
+      {/* Scrim scoped to the hero (scrolls away with it). Left-darken keeps the
+          headline readable; the vertical gradient dissolves the video to solid
+          #0E0F0A by the hero's bottom edge so there's no seam with the section
+          below. Top stays light so the video reads bright up top. */}
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[420px]
-                   bg-[radial-gradient(60%_120%_at_20%_0%,#0D2B17_0%,transparent_60%)]"
         aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: "none",
+          background:
+            "linear-gradient(to right, rgba(14,15,10,0.85) 0%, rgba(14,15,10,0.34) 42%, rgba(14,15,10,0.10) 72%, rgba(14,15,10,0.22) 100%), linear-gradient(to bottom, rgba(14,15,10,0.12) 0%, rgba(14,15,10,0.45) 50%, rgba(14,15,10,0.82) 78%, rgba(14,15,10,0.96) 90%, #0E0F0A 100%)",
+        }}
       />
 
-      <div className="container-page grid items-start gap-10 py-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-20">
-        {/* Left: thesis */}
-        <div id="tool-copy" className="max-w-xl">
-          <p className="eyebrow">Image compressor · runs in your browser</p>
+      {/* Soft defocus band: the video gently blurs out as it meets the dark.
+          Masked so the blur ramps from none at the top to full at the bottom.
+          Pure static CSS — unaffected by reduced-motion. */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: 140,
+          zIndex: 0,
+          pointerEvents: "none",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+          maskImage: "linear-gradient(to bottom, transparent 0%, #000 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, #000 100%)",
+        }}
+      />
 
-          <h1 className="mt-4 font-display text-5xl font-extrabold leading-[0.98] tracking-tight sm:text-6xl">
-            Hit any file size.
-            <span className="block text-leaf">Down to the megabyte.</span>
-          </h1>
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          maxWidth: 720,
+        }}
+      >
+        <h1
+          className="font-display"
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "0.25em",
+            fontSize: "clamp(26px, 3vw, 42px)",
+            fontWeight: 600,
+            lineHeight: 1.08,
+            letterSpacing: "-0.02em",
+            textTransform: "uppercase",
+            color: "#fff",
+            margin: 0,
+          }}
+        >
+          {HEADLINE.map((word, n) => (
+            <FadeUp
+              as="span"
+              key={`${word}-${n}`}
+              delay={0.15 + n * 0.08}
+              style={{ display: "inline-block" }}
+            >
+              {word}
+            </FadeUp>
+          ))}
+        </h1>
 
-          <p className="mt-5 text-lg leading-relaxed text-muted">
-            Name a number — say 2&nbsp;MB — and Squish keeps trimming quality and
-            resolution until your image lands under it. No quality guesswork, no
-            uploads, no waiting on a server.
-          </p>
+        <FadeUp
+          as="p"
+          delay={0.9}
+          style={{
+            marginTop: 24,
+            fontSize: 14,
+            lineHeight: 1.65,
+            color: "rgba(255,255,255,0.85)",
+            maxWidth: 360,
+          }}
+        >
+          Pick a target size — say 2&nbsp;MB — and Squish trims quality and
+          resolution until your image fits. All in your browser, nothing
+          uploaded.
+        </FadeUp>
 
-          <ul className="mt-7 space-y-2.5 font-mono text-sm">
-            {[
-              "Set an exact target in MB",
-              "Watch it shrink, then download",
-              "Compare quality before you commit",
-            ].map((line, i) => (
-              <li key={line} className="flex items-center gap-3 text-ink">
-                <span className="grid h-5 w-5 place-items-center rounded-full bg-leaf-soft text-[11px] font-semibold text-leaf">
-                  {i + 1}
-                </span>
-                {line}
-              </li>
-            ))}
-          </ul>
-
-          <p className="mt-7 inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3.5 py-1.5 text-xs font-medium text-muted">
-            <Lock className="h-3.5 w-3.5 text-leaf" />
-            Your images never leave this tab
-          </p>
-        </div>
-
-        {/* Right: the actual tool */}
-        <div id="tool" className="scroll-mt-24">
-          <Compressor />
-        </div>
+        <FadeUp as="div" delay={1.05} style={{ marginTop: 32 }}>
+          <a href="#tool" className="btn-primary btn-glow">
+            Compress an image
+          </a>
+        </FadeUp>
       </div>
     </section>
   );

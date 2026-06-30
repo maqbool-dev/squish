@@ -1,3 +1,5 @@
+import { FadeUp } from "./FadeUp.jsx";
+
 const steps = [
   {
     n: "01",
@@ -18,26 +20,27 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section id="how" className="border-t border-line/70 bg-paper py-16 sm:py-20">
+    <section id="how" className="border-t border-line bg-paper py-16 sm:py-20">
       <div className="container-page">
-        <div className="max-w-xl">
+        <FadeUp className="max-w-xl">
           <p className="eyebrow">How it works</p>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
             Three steps, start to download.
           </h2>
-        </div>
+        </FadeUp>
 
         <ol className="mt-10 grid gap-4 sm:grid-cols-3">
-          {steps.map((s) => (
-            <li
-              key={s.n}
-              data-glow
-              className="card rounded-xl2 border border-line bg-surface p-6 shadow-card hover:shadow-lift sm:p-7"
-            >
-              <span className="font-mono text-2xl font-semibold text-leaf">{s.n}</span>
-              <h3 className="mt-3 font-display text-lg font-bold tracking-tight">{s.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted">{s.body}</p>
-            </li>
+          {steps.map((s, i) => (
+            <FadeUp as="li" key={s.n} delay={i * 0.08}>
+              <div
+                data-glow
+                className="card h-full rounded-xl2 border border-line bg-surface p-6 shadow-card hover:shadow-lift sm:p-7"
+              >
+                <span className="font-mono text-2xl font-semibold text-amber">{s.n}</span>
+                <h3 className="mt-3 font-display text-lg font-bold tracking-tight">{s.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted">{s.body}</p>
+              </div>
+            </FadeUp>
           ))}
         </ol>
       </div>
